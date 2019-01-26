@@ -2,7 +2,7 @@
 
 # tsh
 
-a fork of troque, a simple TUI client for `transmission-daemon` written in bash.
+a fork of torque, a simple TUI client for `transmission-daemon` written in bash.
 
 
 ## Dependencies

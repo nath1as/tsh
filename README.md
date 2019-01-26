@@ -13,4 +13,4 @@ a fork of torque, a simple TUI client for `transmission-daemon` written in bash.
 ## Running
 
 1. Start `transmission-daemon`.
-2. Run `tosh`.
+2. Run `tsh`.

@@ -1,6 +1,6 @@
 <a href="https://asciinema.org/a/ErHbd5wb0fVucP10dwG4hm2N6" target="_blank"><img src="https://asciinema.org/a/ErHbd5wb0fVucP10dwG4hm2N6.png" alt="img" height="300px" align="right"/></a>
 
-# tsh
+# t.sh
 
 a fork of torque, a simple TUI client for `transmission-daemon` written in bash.
 

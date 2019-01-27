@@ -52,7 +52,8 @@ prompt() {
         o) read -rp "load magnet: ";     send -a "$REPLY"; k=0 ;;
         j) ((j==${#t[@]}))||((k=k>=j?k:++k,j=j<${#t[@]}?++j:j)) ;;
         k) ((k==0))||((k=k<=j?k>0?--k:0:j,j=j>0?--j:j)) ;;
-        q) exit 0 ;
+        q) exec clear
+           exit 0;
     esac
 
     [[ "$1" =~ (j|k) ]] || refresh && printf '\e[?25l\e[H'

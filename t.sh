@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#
-# tsh - minimal tui for transmission-daemon.
+
+# tsh - transmission-daemon shell interface.
 
 refresh() {
     printf '\e[?7l\e[?25l\e[2J\e[H'

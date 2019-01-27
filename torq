@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-# tsh - transmission-daemon shell interface.
+#
+# Torque - minimal tui for transmission-daemon.
 
 refresh() {
     printf '\e[?7l\e[?25l\e[2J\e[H'
@@ -10,20 +10,10 @@ refresh() {
 }
 
 status() {
-    printf '\e[2m\e[%s;H%s\e[m' "$((LINES - 2 ))" "$1"
+    printf '\e[2m\e[%s;H%s\e[m' "$((LINES-1))" "$1"
 }
 
 get_torrents() {
-
-    echo "                                      "
-    echo "                                             ↑ [j] [a] +    ▸ [s] [p] ▮▮"
-    echo "        __              __                   ↓ [k] [r] -          [q] ✘"
-    echo "       |  |_.   .-----.|  |__     "
-    echo "       [   _] _ |__ --]|     |    "
-    echo "       |____][_][_____||__|__|    "
-    echo ""
-    echo ""
-    echo ""
     IFS=$'\n' read -d "" -ra t < <(transmission-remote -l)
     unset 't[0]' 't[-1]' 2>/dev/null
 
@@ -33,7 +23,7 @@ get_torrents() {
     t=("${t[@]//     None/0 MB}")
 
     for((i=${k:=0};i<(j=j>${#t[@]}?${#t[@]}:j);i++));{ t_print "${t[i]/n\/a/0}";}
-    status "   $j/${#t[@]}"$'\e[H'
+    status "[s]tart [p]ause [r]emove [o]pen [j/k] scroll ($j/${#t[@]})"$'\e[H'
 }
 
 t_print() {
@@ -42,9 +32,9 @@ t_print() {
     ((size=perc!=0?${have/.*}*100/perc:0,c=perc==100?33271340:31000000))
 
     printf '\e[K\e[2m%s\e[m \e[1m\e[%s%b%s\e[m\n' \
-           "    $num:" "${c:0:2}m" "\\u${c:2:4}\\${c:6}" "$name"
+           "$num:" "${c:0:2}m" "\\u${c:2:4}\\${c:6}" "$name"
     printf '\e[K\e7%s\e8\e[14C%s\e8\e[32C%s\e8\e[42C%s\e8\e[52C%s\n\e[K\n' \
-           "       $stat " " $have / $size $unit" "(${perc}%)" "⇣ $down" "⇡ $up"
+           "   $stat: " "$have / $size $unit" "(${perc}%)" "⇣ $down" "⇡ $up"
 }
 
 prompt() {
@@ -52,14 +42,12 @@ prompt() {
     status $'\e[B\e[?25h'
 
     case "$1" in
-        s) read -rp "    start torrent: #";  send -t "$REPLY" -s ;;
-        p) read -rp "    pause torrent: #";  send -t "$REPLY" -S ;;
-        r) read -rp "    remove torrent: #"; send -t "$REPLY" -r; k=0 ;;
-        a) read -rp "    add magnet: ";     send -a "$REPLY"; k=0 ;;
+        s) read -rp "start torrent: #";  send -t "$REPLY" -s ;;
+        p) read -rp "pause torrent: #";  send -t "$REPLY" -S ;;
+        r) read -rp "remove torrent: #"; send -t "$REPLY" -r; k=0 ;;
+        o) read -rp "load magnet: ";     send -a "$REPLY"; k=0 ;;
         j) ((j==${#t[@]}))||((k=k>=j?k:++k,j=j<${#t[@]}?++j:j)) ;;
         k) ((k==0))||((k=k<=j?k>0?--k:0:j,j=j>0?--j:j)) ;;
-        q) exec clear
-           exit 0;
     esac
 
     [[ "$1" =~ (j|k) ]] || refresh && printf '\e[?25l\e[H'

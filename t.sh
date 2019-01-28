@@ -16,8 +16,8 @@ status() {
 get_torrents() {
 
     echo "                                      "
-    echo "                                             ↑ [j] [a] +    ▸ [s] [p] ▮▮"
-    echo "        __              __                   ↓ [k] [r] -          [q] ✘"
+    echo "                                       ↑ [j] [a] +    ▸ [s] [p] ▮▮"
+    echo "        __              __             ↓ [k] [r] -          [q] ✘"
     echo "       |  |_.   .-----.|  |__     "
     echo "       [   _] _ |__ --]|     |    "
     echo "       |____][_][_____||__|__|    "
@@ -52,10 +52,10 @@ prompt() {
     status $'\e[B\e[?25h'
 
     case "$1" in
-        s) read -rp "    start torrent: #";  send -t "$REPLY" -s ;;
-        p) read -rp "    pause torrent: #";  send -t "$REPLY" -S ;;
-        r) read -rp "    remove torrent: #"; send -t "$REPLY" -r; k=0 ;;
-        a) read -rp "    add magnet: ";     send -a "$REPLY"; k=0 ;;
+        a) read -rp "   +  add magnet: ";     send -a "$REPLY"; k=0 ;;
+        r) read -rp "   -  remove torrent: #"; send -t "$REPLY" -r; k=0 ;;
+        s) read -rp "   ▸  start torrent: #";  send -t "$REPLY" -s ;;
+        p) read -rp "   ▮▮ pause torrent: #";  send -t "$REPLY" -S ;;
         j) ((j==${#t[@]}))||((k=k>=j?k:++k,j=j<${#t[@]}?++j:j)) ;;
         k) ((k==0))||((k=k<=j?k>0?--k:0:j,j=j>0?--j:j)) ;;
         q) exec clear
